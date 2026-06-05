@@ -1,0 +1,33 @@
+# Dependencies
+vendor/
+composer.lock
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Database
+*.sqlite
+*.db
+
+# Uploads (keep directory structure)
+uploads/*
+!uploads/.gitkeep
+
+# Docker
+.docker/

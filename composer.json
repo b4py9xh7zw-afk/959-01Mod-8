@@ -1,0 +1,19 @@
+{
+    "name": "license-platform/license-platform",
+    "description": "License Management Platform",
+    "type": "project",
+    "require": {
+        "php": ">=8.0",
+        "ext-pdo": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "php app/scripts/init_db.php"
+        ]
+    }
+}
