@@ -43,11 +43,15 @@ require_once __DIR__ . '/../layouts/header.php';
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full <?php 
                                         echo $license['status'] === 'active' ? 'bg-green-100 text-green-800' : 
-                                            ($license['status'] === 'expired' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'); 
+                                            ($license['status'] === 'expired' ? 'bg-red-100 text-red-800' : 
+                                            ($license['status'] === 'blacklisted' ? 'bg-black text-white' : 
+                                            ($license['status'] === 'greylisted' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800'))); 
                                     ?>">
                                         <?php 
                                         echo $license['status'] === 'active' ? '活跃' : 
-                                            ($license['status'] === 'expired' ? '已过期' : '未激活'); 
+                                            ($license['status'] === 'expired' ? '已过期' : 
+                                            ($license['status'] === 'blacklisted' ? '黑名单' : 
+                                            ($license['status'] === 'greylisted' ? '灰名单' : '未激活'))); 
                                         ?>
                                     </span>
                                 </td>

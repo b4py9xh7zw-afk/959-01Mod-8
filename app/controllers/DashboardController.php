@@ -28,6 +28,8 @@ class DashboardController {
             'total_licenses' => $this->licenseModel->count(),
             'active_licenses' => $this->licenseModel->countByStatus('active'),
             'expired_licenses' => $this->licenseModel->countByStatus('expired'),
+            'blacklisted_licenses' => $this->licenseModel->countByListType('blacklisted'),
+            'greylisted_licenses' => $this->licenseModel->countByListType('greylisted'),
             'total_users' => $this->userModel->count()
         ];
         

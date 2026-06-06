@@ -61,6 +61,34 @@ require_once __DIR__ . '/../layouts/header.php';
         <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow">
             <div class="flex items-center justify-between">
                 <div>
+                    <p class="text-gray-600 text-sm font-medium">黑名单许可证</p>
+                    <p class="text-3xl font-bold text-black mt-2"><?php echo $stats['blacklisted_licenses']; ?></p>
+                </div>
+                <div class="bg-gray-800 p-3 rounded-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-600 text-sm font-medium">灰名单许可证</p>
+                    <p class="text-3xl font-bold text-yellow-600 mt-2"><?php echo $stats['greylisted_licenses']; ?></p>
+                </div>
+                <div class="bg-yellow-100 p-3 rounded-lg">
+                    <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow">
+            <div class="flex items-center justify-between">
+                <div>
                     <p class="text-gray-600 text-sm font-medium">用户总数</p>
                     <p class="text-3xl font-bold text-purple-600 mt-2"><?php echo $stats['total_users']; ?></p>
                 </div>
@@ -107,11 +135,15 @@ require_once __DIR__ . '/../layouts/header.php';
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full <?php 
                                         echo $license['status'] === 'active' ? 'bg-green-100 text-green-800' : 
-                                            ($license['status'] === 'expired' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'); 
+                                            ($license['status'] === 'expired' ? 'bg-red-100 text-red-800' : 
+                                            ($license['status'] === 'blacklisted' ? 'bg-black text-white' : 
+                                            ($license['status'] === 'greylisted' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800'))); 
                                     ?>">
                                         <?php 
                                         echo $license['status'] === 'active' ? '活跃' : 
-                                            ($license['status'] === 'expired' ? '已过期' : '未激活'); 
+                                            ($license['status'] === 'expired' ? '已过期' : 
+                                            ($license['status'] === 'blacklisted' ? '黑名单' : 
+                                            ($license['status'] === 'greylisted' ? '灰名单' : '未激活'))); 
                                         ?>
                                     </span>
                                 </td>

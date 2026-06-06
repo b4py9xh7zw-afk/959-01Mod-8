@@ -138,6 +138,27 @@ class License {
             return ['valid' => false, 'message' => 'License key not found'];
         }
         
+        if ($license['status'] === 'blacklisted') {
+            return [
+                'valid' => false,
+                'message' => 'License has been revoked',
+                'revocation_reason' => $license['revocation_reason'],
+                'appeal_channel' => $license['appeal_channel'],
+                'license' => $license
+            ];
+        }
+        
+        if ($license['status'] === 'greylisted') {
+            return [
+                'valid' => true,
+                'warning' => true,
+                'message' => 'License is under observation',
+                'revocation_reason' => $license['revocation_reason'],
+                'appeal_channel' => $license['appeal_channel'],
+                'license' => $license
+            ];
+        }
+        
         if ($license['status'] !== 'active') {
             return ['valid' => false, 'message' => 'License is not active'];
         }
@@ -147,5 +168,68 @@ class License {
         }
         
         return ['valid' => true, 'license' => $license];
+    }
+    
+    public function blacklist($id, $reason, $appealChannel = null) {
+        $license = $this->findById($id);
+        if (!$license) {
+            return false;
+        }
+        
+        $sql = "UPDATE licenses SET status = 'blacklisted', revocation_reason = :reason, appeal_channel = :appeal_channel WHERE id = :id";
+        $params = [
+            ':id' => $id,
+            ':reason' => $reason,
+            ':appeal_channel' => $appealChannel ?: 'support@example.com'
+        ];
+        
+        $this->db->execute($sql, $params);
+        return $license;
+    }
+    
+    public function greylist($id, $reason, $appealChannel = null) {
+        $license = $this->findById($id);
+        if (!$license) {
+            return false;
+        }
+        
+        $sql = "UPDATE licenses SET status = 'greylisted', revocation_reason = :reason, appeal_channel = :appeal_channel WHERE id = :id";
+        $params = [
+            ':id' => $id,
+            ':reason' => $reason,
+            ':appeal_channel' => $appealChannel ?: 'support@example.com'
+        ];
+        
+        $this->db->execute($sql, $params);
+        return $license;
+    }
+    
+    public function restore($id) {
+        $license = $this->findById($id);
+        if (!$license) {
+            return false;
+        }
+        
+        $sql = "UPDATE licenses SET status = 'active', revocation_reason = NULL WHERE id = :id";
+        $this->db->execute($sql, [':id' => $id]);
+        return $license;
+    }
+    
+    public function countByListType($listType) {
+        $sql = "SELECT COUNT(*) as count FROM licenses WHERE status = :status";
+        $result = $this->db->fetchOne($sql, [':status' => $listType]);
+        return $result['count'] ?? 0;
+    }
+    
+    public function findByListType($listType, $limit = 100, $offset = 0) {
+        $limit = max(1, min(1000, (int)$limit));
+        $offset = max(0, (int)$offset);
+        $sql = "SELECT l.*, u.username, u.email 
+                FROM licenses l 
+                LEFT JOIN users u ON l.user_id = u.id 
+                WHERE l.status = :status 
+                ORDER BY l.created_at DESC 
+                LIMIT {$limit} OFFSET {$offset}";
+        return $this->db->fetchAll($sql, [':status' => $listType]);
     }
 }

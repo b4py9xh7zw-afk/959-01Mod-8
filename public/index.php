@@ -38,6 +38,11 @@ $routes = [
     'licenses/view' => ['controller' => 'LicenseController', 'action' => 'view'],
     'licenses/update' => ['controller' => 'LicenseController', 'action' => 'update'],
     'licenses/delete' => ['controller' => 'LicenseController', 'action' => 'delete'],
+    'licenses/blacklist' => ['controller' => 'LicenseController', 'action' => 'blacklist'],
+    'licenses/greylist' => ['controller' => 'LicenseController', 'action' => 'greylist'],
+    'licenses/restore' => ['controller' => 'LicenseController', 'action' => 'restore'],
+    'licenses/revocation-logs' => ['controller' => 'LicenseController', 'action' => 'revocationLogs'],
+    'api/license/validate' => ['controller' => 'LicenseController', 'action' => 'apiValidate'],
 ];
 
 // Default route

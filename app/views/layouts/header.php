@@ -23,6 +23,7 @@
                         <a href="/dashboard/licenses" class="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors">许可证</a>
                         <?php if ($_SESSION['role'] === 'admin'): ?>
                             <a href="/dashboard/users" class="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors">用户管理</a>
+                            <a href="/licenses/revocation-logs" class="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors">吊销日志</a>
                         <?php endif; ?>
                         <a href="/auth/logout" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">退出</a>
                     <?php else: ?>
