@@ -132,7 +132,22 @@ class LicenseController {
                 $data['product_name'] = $_POST['product_name'];
             }
             if (isset($_POST['status'])) {
-                $data['status'] = $_POST['status'];
+                $newStatus = $_POST['status'];
+                $currentStatus = $license['status'];
+                
+                if (in_array($newStatus, ['blacklisted', 'greylisted'])) {
+                    $_SESSION['error'] = '无法通过编辑功能加入黑名单/灰名单，请使用专用的黑名单/灰名单操作按钮';
+                    header('Location: /licenses/view?id=' . $id);
+                    exit;
+                }
+                
+                if (in_array($currentStatus, ['blacklisted', 'greylisted']) && $newStatus !== $currentStatus) {
+                    $_SESSION['error'] = '无法通过编辑功能修改黑名单/灰名单状态，请使用专用的恢复许可证功能';
+                    header('Location: /licenses/view?id=' . $id);
+                    exit;
+                }
+                
+                $data['status'] = $newStatus;
             }
             if (isset($_POST['expires_at'])) {
                 $data['expires_at'] = $_POST['expires_at'] ?: null;

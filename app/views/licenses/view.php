@@ -148,9 +148,12 @@ require_once __DIR__ . '/../layouts/header.php';
                             <option value="active" <?php echo $license['status'] === 'active' ? 'selected' : ''; ?>>活跃</option>
                             <option value="inactive" <?php echo $license['status'] === 'inactive' ? 'selected' : ''; ?>>未激活</option>
                             <option value="expired" <?php echo $license['status'] === 'expired' ? 'selected' : ''; ?>>已过期</option>
-                            <option value="blacklisted" <?php echo $license['status'] === 'blacklisted' ? 'selected' : ''; ?>>黑名单</option>
-                            <option value="greylisted" <?php echo $license['status'] === 'greylisted' ? 'selected' : ''; ?>>灰名单</option>
                         </select>
+                        <?php if (in_array($license['status'], ['blacklisted', 'greylisted'])): ?>
+                        <p class="text-yellow-600 text-sm mt-2">
+                            ⚠️ 当前许可证状态为「<?php echo $license['status'] === 'blacklisted' ? '黑名单' : '灰名单'; ?>」，如需修改状态请使用下方的「恢复许可证」功能。
+                        </p>
+                        <?php endif; ?>
                     </div>
                     
                     <div>
